@@ -11,9 +11,20 @@ CREATE TABLE users (
 );
 ```
 ## 2. Create Test SQL seeds
+```sql
+
+TRUNCATE TABLE users, posts RESTART IDENTITY;
+
+INSERT INTO users (name, username, email, password) VALUES ('Moe', 'moeez', 'moeez@gmail.com', 'strong123');
+INSERT INTO users (name, username, email, password) VALUES ('Joe', 'joeez', 'joeez@gmail.com', 'weak123');
+INSERT INTO users (name, username, email, password) VALUES ('Foe', 'foeez', 'foeez@gmail.com', 'wicked123');
 
 
+INSERT INTO posts (message, timestamp, user_id) VALUES ('first message', '2022-03-01 12:00:00', 1);
+INSERT INTO posts (message, timestamp, user_id) VALUES ('second message', '2022-12-04 12:00:00', 2);
+INSERT INTO posts (message, timestamp, user_id) VALUES ('third message', '2022-10-06 12:00:00', 3);
 
+```
 ## 3. Define the class names
 ```ruby
 # Table name: users
@@ -28,7 +39,6 @@ end
 ```
 
 ## 4. Implement the Model class
-
 ```ruby
 # Model class
 class User
@@ -47,18 +57,18 @@ class UserRepository
     # SELECT id, name, username, email FROM users;
   end
 
-  # Gets a single record by its ID
+  # Returns a single record by its ID
   def find(id)
     # SELECT id, name, username, email FROM users WHERE id = $1;
   end
 
-  # Adds new record to the 'users' table
-  def create(new_user)
+  # Adds a new user
+  def create(user)
     # INSERT INTO users (name, username, email) VALUES ($1, $2, $3);
   end
 
   # Updates the 'users' table
-  def update(id, col, val)
+  def update_username(id, username)
     # UPDATE users SET username = $3 WHERE id = $1;
   end
 
@@ -108,37 +118,37 @@ user.email # =>  'moeee@gmail.com'
 repo = UserRepository.new
 
 new_user = User.new
-new_user.name = 'Marie'
-new_user.username = 'ma_rie'
-new_user.email = 'test4@email.com'
+new_user.name = 'Penaldo'
+new_user.username = 'pens'
+new_user.email = 'penaldo@gmail.com'
 repo.create(new_user)
 
 users = repo.all
 
 users.length # =>  4
-users.last.username # =>  'ma_rie'
-users.last.email # =>  'test4@email.com'
+users.last.username # =>  'pens'
+users.last.email # =>  'penaldo@gmail.com'
 
 
 # 4. Get a single user by username
 repo = UserRepository.new
 
-user = repo.find_by_username('username_2')
+user = repo.find_by_username('toeez')
 
 users[1].id # =>  2
 users[1].name # =>  'Row'
-users[1].username # =>  'username_2'
-users[1].email # =>  'test2@email.com'
+users[1].username # =>  'toeez'
+users[1].email # =>  'toeeez@email.com'
 
 # 5. updates a username
 repo = UserRepository.new
-repo.update(2, 'username', 'del_m')
+repo.update_username(2, 'toeer')
 
 users = repo.all
 users[1].id # =>  '2'
-users[1].name # =>  'name3'
-users[1].username # =>  'del_m'
-users[1].email # =>  'test3@email.com'
+users[1].name # =>  'Row'
+users[1].username # =>  'toeer'
+users[1].email # =>  'toeeez@email.com'
 
 # 6. deletes a user
 repo = UserRepository.new
@@ -154,7 +164,7 @@ users.first.id # =>  2
 ```ruby
 # EXAMPLE
 def reset_users_table
-  seed_sql = File.read('spec/seeds_chitter.sql')
+  seed_sql = File.read('spec/seeds.sql')
   connection = PG.connect({ host: '127.0.0.1', dbname: 'chitter_testing' })
   connection.exec(seed_sql)
 end

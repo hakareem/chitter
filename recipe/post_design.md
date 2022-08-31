@@ -11,18 +11,18 @@ CREATE TABLE posts (
 );
 ```
 ## 2. Create Test SQL seeds
-```ruby
-# Table name: posts
+```sql
+TRUNCATE TABLE users, posts RESTART IDENTITY;
 
-# Model class
-class Post
-end
+INSERT INTO users (name, username, email, password) VALUES ('Moe', 'moeez', 'moeez@gmail.com', 'strong123');
+INSERT INTO users (name, username, email, password) VALUES ('Joe', 'joeez', 'joeez@gmail.com', 'weak123');
+INSERT INTO users (name, username, email, password) VALUES ('Foe', 'foeez', 'foeez@gmail.com', 'wicked123');
 
-# Repository class
-class PostRepository
-end
+
+INSERT INTO posts (message, timestamp, user_id) VALUES ('first message', '2022-03-01 12:00:00', 1);
+INSERT INTO posts (message, timestamp, user_id) VALUES ('second message', '2022-12-04 12:00:00', 2);
+INSERT INTO posts (message, timestamp, user_id) VALUES ('third message', '2022-10-06 12:00:00', 3);
 ```
-
 ## 3. Implement the Model class
 ```ruby
 # Model class
@@ -56,7 +56,7 @@ class PostRepository
   end
 
   # Updates the 'posts' table
-  def update(id, col, val)
+  def update_message(id, message)
     # UPDATE posts SET message = $2 WHERE id = $1;
   end
 
@@ -81,17 +81,17 @@ posts.length # =>  4
 
 posts[0].id # =>  1
 posts[0].message # =>  'First'
-posts[0].timestamp # => '2022-07-15 10:23:54'
+posts[0].timestamp # => '2022-07-15 12:00:00'
 posts[0].user_id # =>  1
 
 posts[1].id # =>  2
 posts[1].message # =>  'Second'
-posts[1].timestamp # => '2022-07-15 10:24:54'
+posts[1].timestamp # => '2022-07-15 12:00:00'
 posts[1].user_id # =>  2
 
 posts[2].id # =>  3
 posts[2].message # =>  'Third'
-posts[2].timestamp # => '2022-07-16 10:25:54'
+posts[2].timestamp # => '2022-07-16 12:00:00'
 posts[2].user_id # =>  3
 
 # 2. Get a single post by id
@@ -101,7 +101,7 @@ post = repo.find(1)
 
 post.id # =>  1
 post.message # =>  'First'
-post.timestamp # => '2022-07-15 10:23:54'
+post.timestamp # => '2022-07-15 12:00:00'
 post.user_id # =>  1
 
 # 3. Adds new record to the 'posts' table
@@ -109,7 +109,7 @@ repo = PostRepository.new
 
 new_post = Post.new
 new_post.message # = 'rain'
-new_post.timestamp# = '2022-07-17 10:26:54'
+new_post.timestamp# = '2022-07-17 12:00:00'
 new_post.user_id #= 3
 repo.create(new_post)
 
@@ -126,7 +126,7 @@ repo.update(2, 'message', 'cloud')
 posts = repo.all
 posts[1].id # =>  2
 posts[1].message # =>  'cloud'
-posts[1].timestamp # =>  '2022-07-15 10:24:54'
+posts[1].timestamp # =>  '2022-07-15 12:00:00'
 posts[1].user_id # =>  2
 
 
