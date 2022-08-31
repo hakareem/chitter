@@ -13,7 +13,6 @@ group :development, :test do
 end
 
 gem "pg", "~> 1.4"
-
 gem "sinatra", "~> 2.2"
 gem "sinatra-contrib", "~> 2.2"
 gem "webrick", "~> 1.7"
