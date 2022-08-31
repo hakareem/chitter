@@ -30,4 +30,4 @@ CREATE TABLE posts (
 INSERT INTO posts ("message", "timestamp", "user_id") VALUES
 ('First', '1950-05-10 12:00:00', 1),
 ('Second', '1960-06-15 11:00:00', 2),
-('Third', '1970-07-20 09:00:00', 3),
+('Third', '1970-07-20 09:00:00', 3);
