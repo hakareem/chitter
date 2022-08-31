@@ -15,8 +15,6 @@ INSERT INTO "public"."users" ("name", "username", "email", "password") VALUES
 ('Toe', 'toeez', 'toeez@email.com', 'password222'),
 ('Cow', 'coweez', 'coweez@email.com', 'password333');
 
--------------------------------------------------------------------------------
-
 DROP TABLE IF EXISTS posts CASCADE;
 
 CREATE SEQUENCE IF NOT EXISTS posts_id_seq;
