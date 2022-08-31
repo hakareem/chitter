@@ -1,33 +1,55 @@
-require_relative 'post.rb'
+require_relative './post'
 
 class PostRepository
-  # Selecting all records
   def all
-    # SELECT id, message, timestamp, user_id FROM posts;
+    sql = 'SELECT id, message, timestamp, user_id FROM posts ORDER by id;'
+    result = DatabaseConnection.exec_params(sql, [])
+
+    return get_posts(result)
   end
 
-  # Gets a single record by its ID
   def find(id)
-    # SELECT id, message, timestamp, user_id FROM posts WHERE id = $1;
+    sql = 'SELECT * FROM posts WHERE id = $1;'
+    result = DatabaseConnection.exec_params(sql, [id])
+
+    return get_posts(result)[0]
   end
 
-  # Gets a single record by its postname
-  def find_by_user_id(user_id)
-    # SELECT id, message, timestamp, user_id FROM posts WHERE user_id = $1;
+  def create(post)
+    sql = 'INSERT INTO posts (message, timestamp, user_id) VALUES ($1, $2, $3);'
+    params = [post.message, post.timestamp, post.user_id]
+    DatabaseConnection.exec_params(sql, params)
   end
 
-  # Adds new record to the 'posts' table
-  def create(new_post)
-    # INSERT INTO posts (message, timestamp, user_id) VALUES ($1, $2, $3);
+  def update_message(id, val)
+    sql = 'UPDATE posts SET message = $2 WHERE id = $1;'
+    params = [id, val]
+    DatabaseConnection.exec_params(sql, params)
   end
 
-  # Updates the 'posts' table
-  def update(id, col, val)
-    # UPDATE posts SET message = $2 WHERE id = $1;
+  def update_user_id(id, val)
+    sql = 'UPDATE posts SET user_id = $2 WHERE id = $1;'
+    params = [id, val]
+    DatabaseConnection.exec_params(sql, params)
   end
 
-  # Removes a record from the 'posts' table
   def delete(id)
-    # DELETE FROM posts WHERE id = $1;
+    sql = 'DELETE FROM posts WHERE id = $1;'
+    DatabaseConnection.exec_params(sql, [id])
+  end
+
+  private
+
+  def get_posts(result)
+    posts = []
+    result.each do |record|
+      post = Post.new
+      post.id = record['id'].to_i
+      post.message = record['message']
+      post.timestamp = record['timestamp']
+      post.user_id = record['user_id'].to_i
+      posts << post
+    end
+    return posts
   end
 end
