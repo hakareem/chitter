@@ -45,21 +45,19 @@ class User
   attr_accessor :id, :name, :username, :email, :password
 end
 ```
-
 ## 5. Define the Repository Class interface
-
 ```ruby
 # Repository class
 class UserRepository
 
-  # Selecting all records
+  # selects all records
   def all
-    # SELECT id, name, username, email FROM users;
+    # SELECT * FROM users;
   end
 
-  # Returns a single record by its ID
+  # returns a single record
   def find(id)
-    # SELECT id, name, username, email FROM users WHERE id = $1;
+    # SELECT * FROM users WHERE id = $1;
   end
 
   # Adds a new user
@@ -67,12 +65,12 @@ class UserRepository
     # INSERT INTO users (name, username, email) VALUES ($1, $2, $3);
   end
 
-  # Updates the 'users' table
+  # Updates the username
   def update_username(id, username)
     # UPDATE users SET username = $3 WHERE id = $1;
   end
 
-  # Removes a record from the 'users' table
+  # Removes a record from users
   def delete(username)
     # DELETE FROM users WHERE username = $1;
   end
@@ -175,7 +173,6 @@ describe UserRepository do
   end
 end
 ```
-
 ## 7. Test-drive and implement the Repository class behaviour
 ```
 Follow the test-driving process of red, green, refactor to implement the behaviour.
