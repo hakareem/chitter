@@ -30,7 +30,6 @@ class Post
   attr_accessor :id, :message, :timestamp, :user_id
 end
 ```
-
 ## 4. Define the Repository Class interface
 ```ruby
 # Repository class
@@ -40,33 +39,32 @@ class PostRepository
     # SELECT id, message, timestamp, user_id FROM posts;
   end
 
-  # Gets a single record by its ID
+  # returns a single record 
   def find(id)
     # SELECT id, message, timestamp, user_id FROM posts WHERE id = $1;
   end
 
-  # Gets a single record by its postname
+  # returns a single record by user_id
   def find_by_user_id(user_id)
     # SELECT id, message, timestamp, user_id FROM posts WHERE user_id = $1;
   end
 
-  # Adds new record to the 'posts' table
+  # Adds new record to the posts table
   def create(new_post)
     # INSERT INTO posts (message, timestamp, user_id) VALUES ($1, $2, $3);
   end
 
-  # Updates the 'posts' table
+  # Updates the message
   def update_message(id, message)
     # UPDATE posts SET message = $2 WHERE id = $1;
   end
 
-  # Removes a record from the 'posts' table
+  # Removes a record
   def delete(id)
     # DELETE FROM posts WHERE id = $1;
   end
 end
 ```
-
 ## 5. Write Test Examples
 
 ```ruby
@@ -104,7 +102,7 @@ post.message # =>  'First'
 post.timestamp # => '2022-07-15 12:00:00'
 post.user_id # =>  1
 
-# 3. Adds new record to the 'posts' table
+# 3. Adds new record 
 repo = PostRepository.new
 
 new_post = Post.new
@@ -130,7 +128,7 @@ posts[1].timestamp # =>  '2022-07-15 12:00:00'
 posts[1].user_id # =>  2
 
 
-# 5. 'deletes a post' do
+# 5. 'deletes a post' 
 repo = PostRepository.new
 
 repo.delete(1)
