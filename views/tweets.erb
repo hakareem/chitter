@@ -4,12 +4,12 @@
   </head>
   <body>
       <%@posts_repo.all.reverse.each do |post|%>
-      <div>
         @<%=@users_repo.find(post.user_id).username%>
         <h3><%=post.message%></h3>
         <%=post.timestamp%>
-      </div>
+        <hr>
       <% end %>
+      <br>
     <div>
         <footer>
         <a href='/login'>Log in</a><br>

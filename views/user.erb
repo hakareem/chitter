@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title><%=@user.username%> account</title>
+    </head>
+    <body>
+        <h2>Hi, <%=@user.username%></h2><br />
+        
+        <%# create a post %>
+        <form method="POST" action="/tweet">
+        <textarea type="textbox" name="message" rows="3" cols="50" placeholder="Write a tweet..." autofocus></textarea>
+        <input type="hidden" name="timestamp" value=<%=DateTime.now%>/>
+        <input type="hidden" name="user_id" value=<%=@user.id%>/>
+        <input type="Submit" value='Tweet' />
+        </form>
+
+        <%# show all tweets %>
+        <%@posts_repo.all.reverse.each do |post|%>
+            <div>
+            @<%=@users_repo.find(post.user_id).username%> 
+            <h4><%=post.message%></h4>
+            </div>
+            <%=post.timestamp%> <hr>
+            </div>
+        <% end %>
+
+        <br>
+        <a href="/">Log out</a>
+    </body>
+</html>
