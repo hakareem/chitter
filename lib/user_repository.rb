@@ -5,28 +5,28 @@ class UserRepository
     sql = 'SELECT id, name, username, email, password FROM users ORDER by id;'
     result = DatabaseConnection.exec_params(sql, [])
 
-    return get_users(result)
+    return users_object(result)
   end
 
   def find(id)
     sql = 'SELECT * FROM users WHERE id = $1;'
     result = DatabaseConnection.exec_params(sql, [id])
 
-    return get_users(result)[0]
+    return users_object(result)[0]
   end
   
-  def find_username(username)
+  def find_username(username) # usernames are unique
     sql = 'SELECT * FROM users WHERE username = $1;'
     result = DatabaseConnection.exec_params(sql, [username])
 
-    return get_users(result)[0]
+    return users_object(result)[0]
   end
 
-  def find_email(email)
+  def find_email(email) # emails are unique
     sql = 'SELECT * FROM users WHERE email = $1;'
     result = DatabaseConnection.exec_params(sql, [email])
 
-    return get_users(result)[0]
+    return users_object(result)[0]
   end
 
   def create(user)
@@ -66,7 +66,7 @@ class UserRepository
 
   private
 
-  def get_users(result)
+  def users_object(result)
     users = []
     result.each do |record|
       user = User.new

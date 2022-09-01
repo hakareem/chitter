@@ -5,14 +5,14 @@ class PostRepository
     sql = 'SELECT id, message, timestamp, user_id FROM posts ORDER by id;'
     result = DatabaseConnection.exec_params(sql, [])
 
-    return get_posts(result)
+    return post_object(result)
   end
 
   def find(id)
     sql = 'SELECT * FROM posts WHERE id = $1;'
     result = DatabaseConnection.exec_params(sql, [id])
 
-    return get_posts(result)[0]
+    return post_object(result)[0]
   end
 
   def create(post)
@@ -40,7 +40,7 @@ class PostRepository
 
   private
 
-  def get_posts(result)
+  def post_object(result)
     posts = []
     result.each do |record|
       post = Post.new
