@@ -4,6 +4,7 @@
         <title><%=@user.username%> account</title>
     </head>
     <body>
+        <div class="container">
         <h2>Hi, <%=@user.username%></h2><br />
         
         <%# create a post %>
@@ -19,12 +20,12 @@
             <div>
             @<%=@users_repo.find(post.user_id).username%> 
             <h4><%=post.message%></h4>
-            </div>
             <%=post.timestamp%> <hr>
             </div>
         <% end %>
 
         <br>
         <a href="/">Log out</a>
+        </div>
     </body>
 </html>
