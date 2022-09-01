@@ -63,6 +63,43 @@ class Application < Sinatra::Base
     return erb :login
   end
 
+  post '/login' do
+    @users_repo = UserRepository.new
+    @posts_repo = PostRepository.new
+    username = params[:username]
+    password = params[:password]
+
+    # if username doesn't exist in db then you can't login
+    @user = @users_repo.find_username(username) 
+    if @user == nil 
+      return erb :login_failed
+    end
+
+    # if the password for that user doesn't match then you can't login
+    if @user.password != params[:password] 
+      return erb :login_failed
+    end
+
+    return erb :user
+  end
+
+  post '/tweet' do
+    @users_repo = UserRepository.new
+    @posts_repo = PostRepository.new
+
+    # find the user trying to make the post through id
+    user_id = params[:user_id].to_i
+    @user = @users_repo.find(user_id)
+
+    # creating a new post record
+    post = Post.new
+    post.message = params[:message]
+    post.timestamp = params[:timestamp]
+    post.user_id = params[:user_id].to_i
+    @posts_repo.create(post)
+
+    return erb :user
+  end
 end
 
 
