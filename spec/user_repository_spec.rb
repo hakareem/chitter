@@ -115,6 +115,7 @@ describe UserRepository do
     repo.update_password(2, 'picker11')
 
     users = repo.all
+    p users
     expect(users[1].id).to eq 2
     expect(users[1].password).to eq 'picker11'
   end
