@@ -9,7 +9,7 @@ require_relative './lib/user_repository'
 require_relative './lib/post_repository'
 
 
-DatabaseConnection.connect('chitter_testing')
+DatabaseConnection.connect
 
 class Application < Sinatra::Base
   configure :development do
