@@ -1,13 +1,13 @@
 <html>
   <head>
-  <link rel="stylesheet" href="/style.css" />  
+    <link rel="stylesheet" type="text/css" href="style.css?version=1" />
     <title>Twitter</title>
   </head>
   <body>
       <%@posts_repo.all.reverse.each do |post|%>
-        @<%=@users_repo.find(post.user_id).username%>
+        <h1> @<%=@users_repo.find(post.user_id).username%></h1>
         <h3><%=post.message%></h3>
-        <%=post.timestamp%>
+        <h4><%=post.timestamp%></h4>
         <hr>
       <% end %>
       <br>
