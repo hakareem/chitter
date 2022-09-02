@@ -5,12 +5,14 @@
     <title>Twitter</title>
   </head>
   <body>
+    <div class='tweets'>
       <%@posts_repo.all.reverse.each do |post|%>
         <h1> @<%=@users_repo.find(post.user_id).username%></h1>
         <h3><%=post.message%></h3>
         <h4><%=post.timestamp%></h4>
         <hr>
       <% end %>
+    </div>
       <br>
     <div>
         <footer>
