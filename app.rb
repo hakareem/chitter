@@ -1,8 +1,13 @@
+require 'sendgrid-ruby'
+include SendGrid
+require 'dotenv'
+Dotenv.load
 require_relative './lib/database_connection'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require_relative './lib/user_repository'
 require_relative './lib/post_repository'
+
 
 DatabaseConnection.connect('chitter_testing')
 
@@ -91,6 +96,22 @@ class Application < Sinatra::Base
     user_id = params[:user_id].to_i
     @user = @users_repo.find(user_id)
 
+    # if there is a user tagged send them an email
+    if !check_tags.empty?
+      from = SendGrid::Email.new(email: ENV['FROM'])
+      to = SendGrid::Email.new(email: ENV['TO'])
+      subject = ENV['SUBJECT']
+      content = SendGrid::Content.new(type: 'text/plain', value: ENV['MESSAGE'])
+      mail = SendGrid::Mail.new(from, subject, to, content)
+
+      sg = SendGrid::API.new(api_key: ENV['KEY'])
+      response = sg.client.mail._('send').post(request_body: mail.to_json)
+
+      puts response.status_code
+      puts response.body
+      puts response.headers
+    end
+
     # creating a new post record
     post = Post.new
     post.message = params[:message]
@@ -98,7 +119,13 @@ class Application < Sinatra::Base
     post.user_id = params[:user_id].to_i
     @posts_repo.create(post)
 
+    # binding.irb
     return erb :user
+  end
+
+  private 
+  def check_tags
+    user_tagged = params[:tag]
   end
 end
 
